@@ -1,0 +1,24 @@
+def parse_quarter(string):
+    """
+    Converts a string from the format YYYYQN in datetime object at the end of quarter N.
+    """
+    
+    # Note: you could also just retrieve the first four elements of the string
+    # and the last one... Regex is fun but often not necessary
+    year, qn = re.search(r'^(20[0-9][0-9])(Q[1-4])$', string).group(1, 2)
+    
+    # year and qn will be strings, pd.datetime expects integers.
+    year = int(year)
+    
+    date = None
+    
+    if qn=='Q1':
+        date = pd.Timestamp(year, 3, 31)
+    elif qn=='Q2':
+        date = pd.Timestamp(year, 6, 30)
+    elif qn=='Q3':
+        date = pd.Timestamp(year, 9, 20)
+    else:
+        date = pd.Timestamp(year, 12, 31)
+        
+    return date
